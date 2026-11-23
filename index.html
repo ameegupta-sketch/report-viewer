@@ -1,0 +1,117 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; frame-src about:; base-uri 'none'; form-action 'none'"><meta name="referrer" content="no-referrer"><title>Private report viewer</title><style>
+:root{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#152644;background:#f5f7fb}*{box-sizing:border-box}body{margin:0}.wrap{max-width:1260px;margin:auto;padding:25px clamp(15px,4vw,54px)}header{color:white;background:#112448}h1{font-size:clamp(27px,4vw,42px);margin:6px 0 17px;letter-spacing:-.045em}h2{margin:4px 0 10px;font-size:24px}.brand{color:#c7d7fd;font-size:14px}.tabs,.tools,.bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.tabs button{background:transparent;color:#d5e2ff;border:1px solid #5a7098}.tabs button[aria-pressed=true]{background:white;color:#17366b}.tools{justify-content:space-between}.panel,.cat,dialog{background:white;border:1px solid #d5deea;border-radius:12px;padding:15px;margin:12px 0}.cat{padding:0;overflow:hidden}.rank{display:grid;grid-template-columns:1fr 58px 65px;gap:10px;align-items:center;padding:10px 16px;text-align:left;width:100%;font-size:15px;border:0;border-radius:0;border-bottom:1px solid #ecf0f6}.rank span:last-child,.rank b{text-align:right;font-variant-numeric:tabular-nums}.rank.top{background:#e8effd;font-weight:700}.rank small,td small,th small{display:block}.note,small{color:#50627d;font-size:13px;line-height:1.5}button,input,select,.btn{font:inherit;background:white;color:#163561;border:1px solid #b7c6da;padding:8px 12px;border-radius:7px}button,.btn{cursor:pointer}.btn{display:inline-block;text-decoration:none}button:hover,.btn:hover{background:#e8effa}button:focus-visible,select:focus-visible,input:focus-visible,.btn:focus-visible{outline:3px solid #ef9a3c}label{font-size:13px;font-weight:600;color:#465974;display:grid;gap:4px}table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}th,td{padding:11px 8px;text-align:right;border-bottom:1px solid #e0e6ef;vertical-align:top}th:first-child,td:first-child{text-align:left}.scroll{overflow:auto}.weeks{min-width:835px}.weeklyDef{display:block;margin:7px 0;font-size:14px;line-height:1.55}#fullReport{border:0;width:100%;height:calc(100dvh - 55px);background:white}.backbar{background:#112448;color:white;padding:7px 12px;display:flex;align-items:center;justify-content:space-between}.backbar button{font-size:13px}dialog{margin:auto;max-width:min(94vw,540px)}dialog::backdrop{background:#0e203baa}[hidden]{display:none!important}.summary{color:#435875}.upload{display:inline-block}.upload input{width:100%;max-width:280px}.stat{font-weight:700}p{line-height:1.55}.current{font-weight:600;color:#233e78}.right{text-align:right}summary{cursor:pointer;font-weight:650}@media(max-width:600px){.wrap{padding:18px 12px}.rank{grid-template-columns:1fr 35px 48px;padding:10px 8px;font-size:14px}.tools>label{flex:1}h1{margin-bottom:12px}.tabs button{padding:7px 9px}.bar{align-items:flex-start}.panel{padding:12px}}
+.insightsBlock{margin:14px 0 22px;background:#fff;border:1px solid #cfdae7;border-radius:12px;padding:clamp(14px,2.5vw,25px);color:#152644}.insightsBlock h3{font-size:21px;margin:0 0 15px}.insightsBlock h4{font-size:15px;margin:6px 0}.ins-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px;margin:0 0 18px}.ins-cards article{padding:0 14px 0 0;border-right:1px solid #dee5f0}.ins-cards article:last-child{border:0}.insightsBlock p{margin:7px 0;font-size:14px;line-height:1.55}.insightsBlock small{display:block;color:#50627d;line-height:1.5}.ins-bar{display:grid;grid-template-columns:47px 1fr 31px;align-items:center;gap:6px;font-size:12px;padding:2px 0}.ins-bar progress{accent-color:#365d9b;width:100%;height:8px}.ins-bar strong{text-align:right}.ins-link{display:inline-block;padding:3px 0;margin-top:5px;background:transparent;border:0;color:#214f8b;text-decoration:underline;font-size:13px}@media(max-width:760px){.ins-cards{grid-template-columns:1fr}.ins-cards article{border:0;border-bottom:1px solid #dee5f0;padding:0 0 12px}}
+</style><link rel="icon" href="data:,"></head><body><main id="gate" class="wrap"><h1>Private report viewer</h1><p>Open the launch link in your private report, or choose a downloaded report to view it on this device.</p><button data-load>Choose a report</button><p id="gateStatus" role="status" class="note"></p></main><div id="overview" hidden><header><div class="wrap"><div class="brand">Email insights</div><h1>Email insights</h1><nav class="tabs"><button data-tab="topics" aria-pressed="true">Topics</button><button data-tab="metrics" aria-pressed="false">Metrics</button><button data-tab="review" aria-pressed="false">Tag review</button></nav></div></header><main class="wrap"><div class="tools"><label>Reporting week (IST)<select id="week"></select></label><p id="cutoff" class="note"></p></div>
+<section id="topics"><h2>What people are asking</h2><p id="summary" class="summary"></p><div class="panel scroll"><table><thead><tr><th>Unit</th><th>No substantive L2</th><th>One L2</th><th>Multiple L2s</th></tr></thead><tbody id="mix"></tbody></table></div><div class="tools"><label>Rank topics<select id="group"><option value="group">Within each L1</option><option value="flat">All L2s together</option></select></label><label>Find a topic<input id="search" type="search" placeholder="Search L1 or L2 tags"></label></div><div id="topicsList"></div></section>
+<section id="metrics" hidden><h2>Weekly metrics</h2><p class="summary">Incoming mail, closed threads, reply speed and thread length by Monday-start week.</p><label>Measure response time for<select id="clock"><option value="thread">First reply to a new conversation</option><option value="email">Reply to each eligible investor email</option></select></label><div id="metricInsights"></div><div class="panel scroll"><table class="weeks"><thead><tr><th>Week of</th><th>Incoming emails</th><th>New threads</th><th>Closed threads</th><th>Eligible</th><th>Within 24h</th><th>Within 48h</th><th>Within 5 days</th><th>Length<br>Median / P90</th></tr></thead><tbody id="weekly"></tbody></table></div><details class="panel" open><summary>Metric definitions</summary><span class="weeklyDef">Incoming emails include investor follow-ups. New threads are grouped by the date of their first investor email. Length counts investor and externally addressed team emails through the snapshot cutoff.</span><span class="weeklyDef">A thread closes when the team replies and the investor either sends no further email by the cutoff or follows up with thanks, feedback, a suggestion or an update without an outstanding request. The last team reply dates a silent closure and the last investor acknowledgement dates the other type. A later question reopens the thread. Historical counts can change on refresh.</span><span class="weeklyDef">First-reply timing covers substantive investor-initiated threads. Email timing uses each investor email with a product or service issue and a human reply addressed to that sender. The thresholds are cumulative elapsed hours. A percentage includes cases with a reply or an elapsed deadline. An unanswered case still within the window appears as pending.</span></details></section>
+<section id="review" hidden><h2>Review conversations and source emails</h2><div class="panel"><p>Choose the private report from your device to read investor emails and team replies or edit tags. Conversation data stays in this browser.</p><div class="bar"><button data-load>Load downloaded HTML</button></div></div></section>
+<p id="status" role="status" class="note"></p></main></div>
+<dialog id="sourceDlg"><h2 id="dlgTitle">Open source emails</h2><p id="dlgCopy"></p><div class="bar"><button data-load>Load downloaded HTML</button><button id="dlgClose">Close</button></div></dialog><input id="file" type="file" accept=".html,text/html" hidden><div id="frameWrap" hidden><div class="backbar"><span>Private report</span><button id="back">Back to overview</button></div><iframe id="fullReport" title="Private report" sandbox="allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox"></iframe></div>
+<script type="application/json" id="stats">null</script><script>
+let D=JSON.parse(document.getElementById('stats').textContent);const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),pct=(n,total)=>total?(100*n/total).toFixed(1)+'%':'0.0%',fmt=n=>Number(n).toLocaleString('en-IN'),date=s=>new Date(s+'T00:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'});
+let requested=null;
+function init(){ $('gate').hidden=true;$('overview').hidden=false;$('week').innerHTML='<option value="all">All weeks</option>'+D.weeks.map(w=>'<option value="'+esc(w.week)+'">'+date(w.week)+'</option>').join('');
+$('cutoff').textContent='Through '+new Date(D.cutoff).toLocaleString('en-IN',{timeZone:'Asia/Kolkata',dateStyle:'medium',timeStyle:'short'})+' IST'; render()}
+function focusWeek(weeks,cutoff){
+ const date=new Date(Date.parse(cutoff)+19800000).toISOString().slice(0,10);
+ const isComplete=w=>w.first===w.week&&new Date(w.last+'T00:00:00Z').getUTCDay()===0&&w.last<date;
+ const w=weeks.find(isComplete)||weeks[0];
+ if(!w)return null;
+ const prev=new Date(Date.parse(w.week+'T00:00:00Z')-7*864e5).toISOString().slice(0,10);
+ return {w,prior:isComplete(w)?weeks.find(x=>x.week===prev&&isComplete(x)):null,complete:isComplete(w)};
+}
+function insightsFor(weeks,cutoff,unit='thread'){
+ const focus=focusWeek(weeks,cutoff);if(!focus)return null;
+ const {w,prior,complete}=focus,a=w[unit],p=prior?.[unit],pc=(n,d)=>d?Math.round(100*n/d)+'%':'N/A';
+ const change=(n,old)=>n===old?'unchanged at '+n:(n>old?'up ':'down ')+Math.abs(n-old)+' from '+old;
+ const timing=(h,word)=>{const x=a[h];return x.eligible?x.count+' of '+x.eligible+' ('+pc(x.count,x.eligible)+') received a reply within '+word+'.':x.pending?'All '+x.pending+' are still within the '+word+' window.':'No eligible cases in this window.'};
+ const net=(p&&p[24].eligible&&a[24].eligible)?+(100*(a[24].count/a[24].eligible-p[24].count/p[24].eligible)).toFixed(1):null;
+ const follow=w.incoming-w.newThreads;
+ const volume=w.incoming+' investor emails'+(prior?', '+change(w.incoming,prior.incoming)+' the previous week':'')+'. '+follow+' were follow-ups ('+pc(follow,w.incoming)+').';
+ const speed=timing(24,'24 hours')+(net!==null?' The on-time rate '+(net===0?'was unchanged':(net>0?'rose ':'fell ')+Math.abs(net)+' percentage points')+' from the prior week.':'')+(a.waiting24?' '+a.waiting24+' still had no reply after 24 hours at the cutoff.':'');
+ const closing=w.closed+' threads closed. '+w.silent+' ended after our reply and '+w.ack+' ended in acknowledgement or feedback. '+w.olderClosures+' of these started before this week.';
+ const label=unit==='thread'?'first replies':'replies to individual emails';
+ const timingDetail=a.medianHours===null?'No human replies have been recorded for this cohort.':'Median time among '+a.replied+' observed '+label+' was '+a.medianHours+' hours.';
+ const tail=w.long+' of '+w.newThreads+' new threads reached five or more emails. '+(w.median==null?'':'Median length was '+w.median+' and the 90th percentile was '+w.p90+'.');
+ const top=(field,other)=>{const sorted=w.topics.filter(x=>x[field]>0).sort((a,b)=>b[field]-a[field]||b[other]-a[other]||a.name.localeCompare(b.name));const threshold=sorted[2]?.[field]||1;return sorted.filter(x=>x[field]>=threshold)};
+ return {w,prior,complete,volume,speed,closing,tail,timingDetail,longTopics:top('long','total'),slowTopics:top('late','assessed')};
+}
+
+function insightMarkup(weeks,cutoff,unit,interactive=false){
+ const o=insightsFor(weeks,cutoff,unit);if(!o)return '';
+ const {w,prior}=o;
+ const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const short=d=>new Date(d+'T00:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'});
+ const action=(label,key)=>interactive&&key?'<button class="ins-link" data-focus-week="'+w.week+'" data-focus-key="'+key+'">'+label+'</button>':'';
+ const card=(title,desc,foot='')=>'<article><h4>'+title+'</h4><p>'+escape(desc)+'</p>'+foot+'</article>';
+ const sorted=weeks.filter(x=>x.week<=w.week).slice(0,4).reverse(),max=Math.max(1,...sorted.map(x=>x.incoming));
+ const trend=sorted.map(x=>'<div class="ins-bar"><span>'+short(x.week)+'</span><progress aria-label="Incoming emails" max="'+max+'" value="'+x.incoming+'"></progress><strong>'+x.incoming+'</strong></div>').join('');
+ const topics=(xs,k)=>xs.map(x=>escape(x.name)+' ('+x[k]+')').join(', ');
+ const longText=o.longTopics.length?'Most common topics in those threads: '+topics(o.longTopics,'long')+'.':'';
+ const slowText=o.slowTopics.length?'Most common topics among new threads that missed 24 hours: '+topics(o.slowTopics,'late')+'.':'';
+ const title=o.complete?'Week in focus':'Partial period';
+ return '<section class="insightsBlock"><h3>'+title+' · '+short(w.first)+' to '+short(w.last)+'</h3><div class="ins-cards">'+card('Incoming workload',o.volume,trend)+card('Reply speed',o.speed,'<small>'+escape(o.timingDetail)+'</small>'+(unit==='thread'&&w.thread.waiting24?action('Inspect overdue first replies','waiting24'):''))+card('Closures',o.closing,action('Inspect closed threads','closed'))+'</div><h4>Where conversations took more work</h4><p>'+escape(o.tail)+' '+longText+'</p>'+(slowText?'<p>'+slowText+'</p>':'')+'<small>Topic counts can overlap. Newer threads have had less time to grow.</small>'+action('Inspect threads with 5+ emails',w.long?'long':null)+'</section>';
+}
+
+function setData(obj){
+ if(!obj||!Number.isFinite(Date.parse(obj.cutoff))||!Array.isArray(obj.weeks)||!obj.topics?.all||!obj.codebook)throw Error();
+ const number=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0;
+ const day=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s);
+ for(const row of obj.weeks){
+  if(![row.week,row.first,row.last].every(day)||![row.incoming,row.newThreads,row.closed,row.silent,row.ack,row.olderClosures,row.long].every(number)||!Array.isArray(row.topics))throw Error();
+  for(const t of row.topics)if(typeof t.name!=='string'||![t.long,t.late,t.total,t.assessed].every(number))throw Error();
+  for(const k of ['thread','email']){
+   const x=row[k];if(!x||![x.total,x.replied,x.waiting24].every(number))throw Error();
+   for(const h of [24,48,120])if(!x[h]||![x[h].count,x[h].eligible,x[h].pending].every(number))throw Error();
+  }
+ }
+ D=obj;init();
+}
+function setTab(name){for(const k of ['topics','metrics','review'])$(k).hidden=k!==name;document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.tab===name));render()}
+function render(){
+ const w=$('week').value||'all',s=D.topics[w],needle=$('search').value.trim().toLowerCase(),heads=[...new Set(Object.values(D.codebook).map(pair=>pair[0]))].sort((a,b)=>(s.heads[b]||0)-(s.heads[a]||0)||a.localeCompare(b));
+ $('summary').textContent=fmt(s.total)+' conversations. Percentages use all conversations in the selected period. A thread can carry multiple tags.';
+ $('mix').innerHTML=[['Individual investor emails',s.emailMix],['Whole conversations',s.mix]].map(([l,a])=>'<tr><th>'+l+'</th>'+a.map(n=>'<td>'+fmt(n)+' <small>'+pct(n,a.reduce((x,y)=>x+y,0))+'</small></td>').join('')+'</tr>').join('');
+ const rows=Object.entries(D.codebook).map(([c,[h,l]])=>({c,h,l,n:s.codes[c]||0})).filter(x=>(x.h+' '+x.l).toLowerCase().includes(needle)).sort((a,b)=>b.n-a.n||a.l.localeCompare(b.l));
+ const r=(x,flat)=>'<button class="rank" data-code="'+esc(x.c)+'"><span>'+(flat?'<small>'+esc(x.h)+'</small>':'')+esc(x.l)+'</span><b>'+fmt(x.n)+'</b><span>'+pct(x.n,s.total)+'</span></button>';
+ $('topicsList').innerHTML=($('group').value==='flat'?'<div class="cat">'+rows.map(x=>r(x,true)).join('')+'</div>':heads.map(h=>{const items=rows.filter(x=>x.h===h);return items.length?'<div class="cat"><button class="rank top" data-head="'+esc(h)+'"><span>'+esc(h)+'</span><b>'+fmt(s.heads[h]||0)+'</b><span>'+pct(s.heads[h]||0,s.total)+'</span></button>'+items.map(x=>r(x,false)).join('')+'</div>':''}).join(''))||'<p>No matching tags.</p>';
+ const clock=$('clock').value,weekly=w==='all'?D.weeks:D.weeks.filter(x=>x.week===w);
+ $('metricInsights').innerHTML=insightMarkup(weekly,D.cutoff,clock,false);
+ $('weekly').innerHTML=weekly.map(x=>{const a=x[clock];return '<tr><th>'+date(x.week)+(x===D.weeks[0]?'<small>To cutoff</small>':'')+'</th>'+[x.incoming,x.newThreads].map(n=>'<td>'+fmt(n)+'</td>').join('')+'<td>'+fmt(x.closed)+'<small>'+fmt(x.silent)+' no further reply · '+fmt(x.ack)+' acknowledgement</small></td><td>'+fmt(a.total)+'</td>'+[24,48,120].map(h=>'<td>'+fmt(a[h].count)+'<small>'+(a[h].eligible?pct(a[h].count,a[h].eligible):'N/A')+' · '+a[h].eligible+' assessed'+(a[h].pending?' · '+a[h].pending+' pending':'')+'</small></td>').join('')+'<td>'+esc(x.median??'N/A')+' / '+esc(x.p90??'N/A')+'</td></tr>'}).join('');
+}
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const x=b.dataset;
+ if(x.tab){requested=null;setTab(x.tab)}
+ if(x.code||x.head){requested=x.code?{code:x.code}:{head:x.head};$('dlgTitle').textContent=x.code?D.codebook[x.code][1]:x.head;$('dlgCopy').textContent='The current topic counts are shown here. Load the private HTML to open this topic with its investor examples and complete threads. The file opens locally in this browser.';$('sourceDlg').showModal()}
+ if(x.load!==undefined)$('file').click();if(b.id==='dlgClose')$('sourceDlg').close();if(b.id==='back'){$('fullReport').removeAttribute('srcdoc');$('frameWrap').hidden=true;$('overview').hidden=!D;$('gate').hidden=!!D}
+});
+for(const k of ['week','group','clock'])$(k).onchange=render;$('search').oninput=render;
+$('file').onchange=async e=>{try{
+ const file=e.target.files[0];if(!file)return;
+ const source=await file.text();
+ const stats=source.match(/<script type="application\/json" id="stats">([^<]*)<\/script>/);
+ if(stats){const data=JSON.parse(stats[1]);if(data){setData(data);if($('sourceDlg').open)$('sourceDlg').close();$('frameWrap').hidden=true;setTab('topics');return}}
+ const src=source.match(/(<script id="payload" type="application\/json">)([^<]*)(<\/script>)/);
+ if(!src)throw new Error();
+ const template=source.slice(0,src.index)+src[1]+'__PAYLOAD__'+src[3]+source.slice(src.index+src[0].length);
+ const digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(template))),v=>v.toString(16).padStart(2,'0')).join('');
+ if(digest!=='6f816f91f186e689f63a954cf032b84ec4ede395b69dc2a1db47b9a2a268ff18')throw new Error();
+ const data=JSON.parse(src[2]);if(!Array.isArray(data.threads)||!data.codes)throw new Error();
+ let contents=template.replace('__PAY'+'LOAD__',()=>JSON.stringify(data).replace(/</g,'\\u003c'));
+ const week=$('week').value,initial=requested?{...requested}:{};if(week&&week!=='all')initial.week=week;
+ if(D&&!requested&&!$('review').hidden)initial.tab='review';if(D&&!requested&&!$('metrics').hidden)initial.tab='metrics';const bridge=';(()=>{const v='+JSON.stringify(initial).replace(/</g,'\\u003c')+';if(v.week){document.getElementById("start").value=v.week;document.getElementById("end").value=shift(v.week,6);document.getElementById("period").value="custom";render()}if(v.tab)setTab(v.tab);if(v.code||v.head){const k=v.code?"code":"head";const b=[...document.querySelectorAll("[data-"+k+"]")].find(x=>x.dataset[k]===v[k]);if(b)b.click()}})();';
+ contents=contents.replace('</scr'+'ipt></body>',()=>bridge+'</scr'+'ipt></body>');if($('sourceDlg').open)$('sourceDlg').close();$('gate').hidden=true;$('frameWrap').hidden=false;$('overview').hidden=true;$('fullReport').srcdoc=contents;
+ }catch(error){if($('sourceDlg').open)$('sourceDlg').close();$('gateStatus').textContent=$('status').textContent='Choose the original private report HTML or its aggregate dashboard.'}finally{e.target.value=''}};
+async function start(){
+ if(D){init();return}
+ $('overview').hidden=true;$('gate').hidden=false;
+ if(!location.hash.startsWith('#report='))return;
+ try{
+ const raw=location.hash.slice(8).replace(/-/g,'+').replace(/_/g,'/');
+ const bytes=Uint8Array.from(atob(raw),c=>c.charCodeAt(0));
+ const obj=JSON.parse(await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).text());
+ if(!Array.isArray(obj.weeks)||!obj.topics?.all||!obj.codebook)throw new Error();
+ setData(obj);
+ }catch{ $('gateStatus').textContent='The snapshot link could not be read. Open the report in the private GitHub repository.' }
+}
+start();
+</script></body></html>
