@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; frame-src 'self' about:; img-src data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+<link rel="icon" href="data:,"><title>Private report</title>
+<style>
+:root{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f3f6fb;color:#132746}
+*{box-sizing:border-box}body{margin:0}[hidden]{display:none!important}#gate{min-height:100dvh;display:grid;place-items:center;padding:24px}
+.card{width:min(100%,400px);padding:32px;background:white;border:1px solid #d6dfed;border-radius:16px;box-shadow:0 6px 24px #1637640c}
+h1{font-size:30px;letter-spacing:-.04em;margin:0 0 21px}label{display:block;font-weight:600;font-size:14px;margin-bottom:7px}input{width:100%;border-radius:7px;border:1px solid #8c9db8;padding:11px;font:inherit}button{border:0;border-radius:7px;padding:10px 14px;font:inherit;font-weight:650;cursor:pointer}#unlock{width:100%;margin-top:13px;background:#163f80;color:white}button:disabled{opacity:.6;cursor:wait}input:focus-visible,button:focus-visible{outline:3px solid #f9af57;outline-offset:2px}#feedback{line-height:1.5;color:#465b76;font-size:14px;margin-bottom:0}#feedback:empty{display:none}
+#controls{height:43px;display:flex;align-items:center;gap:8px;justify-content:flex-end;background:#112448;padding:5px 15px;color:white}#controls button{padding:4px 10px;font-size:12px;color:#193252;background:white}#copied{font-size:12px}#report{border:0;display:block;width:100%;height:calc(100dvh - 43px);background:white}
+</style></head><body>
+<main id="gate"><section class="card"><h1>Private report</h1><form id="form"><label for="password">Report password</label><input id="password" type="password" autocomplete="current-password" required><button id="unlock" type="submit">Open dashboard</button></form><p id="feedback" role="status" aria-live="polite"></p></section></main>
+<nav id="controls" aria-label="Report access" hidden><span id="copied" role="status"></span><button id="copy">Copy private link</button><button id="lock">Lock report</button></nav>
+<iframe id="report" title="Full report" referrerpolicy="no-referrer" sandbox="allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox" hidden></iframe><script src="./lock.js"></script></body></html>
