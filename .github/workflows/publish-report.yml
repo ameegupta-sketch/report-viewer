@@ -1,7 +1,10 @@
 name: Publish private report viewer
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
+    paths:
+      - 'protected/**'
+      - '.github/workflows/publish-report.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -22,12 +25,11 @@ jobs:
       - name: Assemble viewer and encrypted release asset
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ github.event.release.tag_name }}
         run: |
           set -eu
           mkdir -p site
-          cp protected/index.html protected/lock.js site/
-          if [ -z "$TAG" ]; then TAG="$(gh release view --json tagName --jq .tagName)"; fi
+          cp protected/index.html protected/lock.js protected/password-envelope.json site/
+          TAG="$(gh release view --json tagName --jq .tagName)"
           gh release download "$TAG" --pattern report.sealed --dir site
           test "$(head -c 8 site/report.sealed)" = RPTLOCK1
           sha256sum site/report.sealed
